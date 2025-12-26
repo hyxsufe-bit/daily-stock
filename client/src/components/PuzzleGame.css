@@ -1,0 +1,94 @@
+.puzzle-game {
+  padding: 20px;
+}
+
+.puzzle-game h2 {
+  font-size: 28px;
+  margin-bottom: 12px;
+  color: #333;
+}
+
+.task-description {
+  color: #666;
+  margin-bottom: 30px;
+  font-size: 16px;
+}
+
+.puzzle-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+  margin-bottom: 30px;
+}
+
+.puzzle-section h3 {
+  font-size: 20px;
+  margin-bottom: 16px;
+  color: #333;
+  text-align: center;
+}
+
+.puzzle-pieces {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.puzzle-piece {
+  padding: 20px;
+  background: white;
+  border: 2px solid #e0e0e0;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: center;
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
+}
+
+.puzzle-piece:hover {
+  border-color: #667eea;
+  background: #f8f9ff;
+  transform: translateY(-2px);
+}
+
+.puzzle-piece.selected {
+  border-color: #667eea;
+  background: #f0f4ff;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+.puzzle-piece.value {
+  background: #f8f9fa;
+}
+
+.instruction {
+  text-align: center;
+  padding: 16px;
+  background: #fff3cd;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  color: #856404;
+  font-weight: 600;
+}
+
+.completion-message {
+  text-align: center;
+  padding: 30px;
+  background: #d1fae5;
+  border-radius: 12px;
+  color: #065f46;
+}
+
+.completion-message svg {
+  color: #10b981;
+  margin-bottom: 12px;
+}
+
+.completion-message p {
+  font-size: 20px;
+  font-weight: 600;
+  margin: 0;
+}
+

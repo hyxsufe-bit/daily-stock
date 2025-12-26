@@ -1,0 +1,79 @@
+.reading-task {
+  padding: 20px;
+}
+
+.reading-task h2 {
+  font-size: 28px;
+  margin-bottom: 12px;
+  color: #333;
+}
+
+.task-description {
+  color: #666;
+  margin-bottom: 24px;
+  font-size: 16px;
+}
+
+.reading-content {
+  background: #f8f9fa;
+  padding: 24px;
+  border-radius: 12px;
+  margin-bottom: 24px;
+  min-height: 300px;
+}
+
+.data-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+}
+
+.data-item {
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.data-label {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 8px;
+  text-transform: capitalize;
+}
+
+.data-value {
+  font-size: 20px;
+  font-weight: 600;
+  color: #333;
+}
+
+.text-content {
+  line-height: 1.8;
+  font-size: 16px;
+  color: #333;
+}
+
+.reading-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 20px;
+  border-top: 1px solid #e0e0e0;
+}
+
+.read-time {
+  color: #666;
+  font-size: 14px;
+}
+
+.completed-badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #10b981;
+  font-weight: 600;
+}
+
