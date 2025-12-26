@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Check, X, ChevronDown, ChevronUp, Home, HelpCircle, TrendingUp, TrendingDown, AlertTriangle, Target, Sparkles, Star } from 'lucide-react';
+import stocksData from '../data/stocks.json';
 import './GamePlay.css';
 
 interface DetailSection {
@@ -88,11 +89,11 @@ export default function GamePlay() {
 
   const fetchData = async () => {
     try {
-      const res = await fetch(`/api/stocks/${stockCode}`);
-      const data = await res.json();
-      if (data.success) {
-        setStock(data.data);
-        const q = data.data.questions.find((q: Question) => q.id === questionId);
+      // 使用本地数据
+      const foundStock = (stocksData as any[]).find(s => s.code === stockCode);
+      if (foundStock) {
+        setStock(foundStock);
+        const q = foundStock.questions.find((q: Question) => q.id === questionId);
         setQuestion(q || null);
         if (q && q.type === 'slider') {
           setSliderValue((q.minValue + q.maxValue) / 2);

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Flame, ChevronLeft, ChevronRight, Sparkles, Trophy, Target, BookOpen } from 'lucide-react';
+import stocksData from '../data/stocks.json';
 import './Home.css';
 
 interface Stock {
@@ -21,22 +22,10 @@ export default function Home() {
   const [streak] = useState(3);
 
   useEffect(() => {
-    fetchStocks();
+    // 使用本地数据
+    setStocks(stocksData as Stock[]);
+    setLoading(false);
   }, []);
-
-  const fetchStocks = async () => {
-    try {
-      const res = await fetch('/api/stocks/today');
-      const data = await res.json();
-      if (data.success) {
-        setStocks(data.data);
-      }
-    } catch (error) {
-      console.error('Failed to fetch stocks:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const nextCard = () => {
     setCurrentIndex((prev) => (prev + 1) % stocks.length);

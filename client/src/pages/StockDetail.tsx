@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { ArrowLeft, RefreshCw, Zap, Users, BookOpen, Star, TrendingUp } from 'lucide-react';
+import stocksData from '../data/stocks.json';
 import './StockDetail.css';
 
 interface Question {
@@ -40,24 +41,15 @@ export default function StockDetail() {
   const [isWatchlisted, setIsWatchlisted] = useState(false);
 
   useEffect(() => {
-    fetchStock();
-  }, [stockCode]);
-
-  const fetchStock = async () => {
-    try {
-      const res = await fetch(`/api/stocks/${stockCode}`);
-      const data = await res.json();
-      if (data.success) {
-        setStock(data.data);
-        setQuestionPool(data.data.questions);
-        shuffleQuestions(data.data.questions);
-      }
-    } catch (error) {
-      console.error('Failed to fetch stock:', error);
-    } finally {
-      setLoading(false);
+    // 使用本地数据
+    const foundStock = (stocksData as Stock[]).find(s => s.code === stockCode);
+    if (foundStock) {
+      setStock(foundStock);
+      setQuestionPool(foundStock.questions);
+      shuffleQuestions(foundStock.questions);
     }
-  };
+    setLoading(false);
+  }, [stockCode]);
 
   const shuffleQuestions = (questions: Question[]) => {
     const shuffled = [...questions].sort(() => Math.random() - 0.5);
