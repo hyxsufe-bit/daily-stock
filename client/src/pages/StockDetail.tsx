@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { ArrowLeft, RefreshCw, Zap, Users, BookOpen, Star, TrendingUp } from 'lucide-react';
 import stocksData from '../data/stocks.json';
+import AIChat from '../components/AIChat';
 import './StockDetail.css';
 
 interface Question {
@@ -12,6 +13,14 @@ interface Question {
   question: string;
   askedCount?: number;
   backgroundInfo?: string;
+}
+
+interface AIKnowledge {
+  basicInfo: string;
+  investmentAdvice: string;
+  riskWarning: string;
+  hotTopics: string[];
+  faq: { q: string; a: string }[];
 }
 
 interface Stock {
@@ -29,6 +38,7 @@ interface Stock {
     conceptWind: number;
   };
   questions: Question[];
+  aiKnowledge?: AIKnowledge;
 }
 
 export default function StockDetail() {
@@ -382,6 +392,13 @@ export default function StockDetail() {
           开启模拟交易
         </button>
       </section>
+
+      {/* AI Chat Assistant */}
+      <AIChat 
+        stockName={stock.name}
+        stockCode={stock.code}
+        aiKnowledge={stock.aiKnowledge}
+      />
     </div>
   );
 }
