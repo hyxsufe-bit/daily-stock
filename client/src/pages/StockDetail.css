@@ -133,20 +133,14 @@
   margin: 0;
 }
 
-/* CTA Section */
-.cta-section {
-  display: flex;
-  gap: 10px;
-  margin-bottom: 24px;
-}
-
+/* CTA Buttons */
 .cta-btn {
   flex: 1;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 6px;
-  padding: 12px;
+  padding: 14px 20px;
   border-radius: 12px;
   font-size: 14px;
   font-weight: 600;
@@ -524,6 +518,7 @@
 /* Bottom CTA */
 .bottom-cta {
   margin-top: 24px;
+  margin-bottom: 100px;
   padding: 20px;
   background: linear-gradient(135deg, rgba(168, 85, 247, 0.1), rgba(0, 212, 255, 0.1));
   border: 1px solid rgba(168, 85, 247, 0.2);
@@ -534,7 +529,16 @@
 .cta-text {
   font-size: 14px;
   color: var(--text-secondary);
-  margin: 0 0 12px;
+  margin: 0 0 16px;
+}
+
+.bottom-cta-buttons {
+  display: flex;
+  gap: 12px;
+}
+
+.bottom-cta-buttons .cta-btn {
+  flex: 1;
 }
 
 .cta-btn-large {

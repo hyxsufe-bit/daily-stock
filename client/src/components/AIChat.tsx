@@ -45,7 +45,7 @@ export default function AIChat({ stockName, stockCode, aiKnowledge }: AIChatProp
       const welcomeMsg: Message = {
         id: 'welcome',
         type: 'ai',
-        content: `👋 嗨！我是你的AI投资小助手～\n\n关于 **${stockName}**，你想了解什么？可以直接问我，或者点击下方的热门问题开始探索！`,
+        content: `👋 嗨！我是你的新手导师～\n\n关于 **${stockName}**，有任何问题都可以问我！点击下方的热门问题，或者直接输入你想了解的内容。`,
         timestamp: new Date(),
       };
       setMessages([welcomeMsg]);
@@ -165,7 +165,7 @@ export default function AIChat({ stockName, stockCode, aiKnowledge }: AIChatProp
       >
         <div className="fab-glow"></div>
         <Sparkles size={24} />
-        <span className="fab-label">问AI</span>
+        <span className="fab-label">新手导师</span>
       </button>
 
       {/* 聊天面板 */}
@@ -177,10 +177,10 @@ export default function AIChat({ stockName, stockCode, aiKnowledge }: AIChatProp
               <Sparkles size={18} />
             </div>
             <div className="header-info">
-              <h3>AI投资助手</h3>
+              <h3>新手导师</h3>
               <span className="status">
                 <span className="status-dot"></span>
-                在线 · 随时为你解答
+                在线 · 有问必答
               </span>
             </div>
           </div>

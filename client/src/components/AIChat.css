@@ -58,11 +58,12 @@
 
 .fab-label {
   position: absolute;
-  bottom: -24px;
-  font-size: 11px;
-  font-weight: 600;
+  bottom: -26px;
+  font-size: 12px;
+  font-weight: 700;
   white-space: nowrap;
-  color: var(--text-secondary);
+  color: var(--accent-purple);
+  text-shadow: 0 1px 2px rgba(0,0,0,0.3);
 }
 
 /* Chat Panel */

@@ -215,18 +215,6 @@ export default function StockDetail() {
         </div>
       </section>
 
-      {/* CTA Buttons - New */}
-      <section className="cta-section">
-        <button className={`cta-btn watchlist ${isWatchlisted ? 'active' : ''}`} onClick={handleAddWatchlist}>
-          <Star size={16} fill={isWatchlisted ? 'currentColor' : 'none'} />
-          {isWatchlisted ? '已加自选' : '加入自选'}
-        </button>
-        <button className="cta-btn trade">
-          <TrendingUp size={16} />
-          模拟买入
-        </button>
-      </section>
-
       {/* Questions Section - Core Feature */}
       <section className="questions-section">
         <div className="section-header">
@@ -386,11 +374,17 @@ export default function StockDetail() {
 
       {/* Bottom CTA */}
       <section className="bottom-cta">
-        <p className="cta-text">📚 学完了？用模拟盘练练手吧</p>
-        <button className="cta-btn-large">
-          <TrendingUp size={18} />
-          开启模拟交易
-        </button>
+        <p className="cta-text">📚 学完了？下一步行动</p>
+        <div className="bottom-cta-buttons">
+          <button className={`cta-btn watchlist ${isWatchlisted ? 'active' : ''}`} onClick={handleAddWatchlist}>
+            <Star size={16} fill={isWatchlisted ? 'currentColor' : 'none'} />
+            {isWatchlisted ? '已加自选' : '加入自选'}
+          </button>
+          <button className="cta-btn trade">
+            <TrendingUp size={16} />
+            模拟买入
+          </button>
+        </div>
       </section>
 
       {/* AI Chat Assistant */}
