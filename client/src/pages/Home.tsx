@@ -219,6 +219,18 @@ export default function Home() {
         </div>
       </div>
 
+      {/* 新手导师入口卡片 */}
+      <div className="mentor-card" onClick={() => document.querySelector<HTMLButtonElement>('.ai-chat-fab')?.click()}>
+        <div className="mentor-icon">
+          <Sparkles size={24} />
+        </div>
+        <div className="mentor-info">
+          <h3>🎓 新手导师</h3>
+          <p>有问题？AI导师在线答疑，随时帮你解惑！</p>
+        </div>
+        <div className="mentor-arrow">💬</div>
+      </div>
+
       {/* AI Chat - 新手导师 */}
       <AIChat 
         stockName="股票投资"
