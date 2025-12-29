@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Check, X, ChevronDown, ChevronUp, Home, HelpCircle, TrendingUp, TrendingDown, AlertTriangle, Target, Sparkles, Star } from 'lucide-react';
 import stocksData from '../data/stocks.json';
+import AIChat from '../components/AIChat';
 import './GamePlay.css';
 
 interface DetailSection {
@@ -719,6 +720,12 @@ export default function GamePlay() {
           </div>
         </section>
       )}
+
+      {/* AI Chat - 新手导师 */}
+      <AIChat 
+        stockName={stock.name}
+        stockCode={stock.code}
+      />
     </div>
   );
 }
