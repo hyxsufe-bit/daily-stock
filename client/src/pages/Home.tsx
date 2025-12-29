@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Flame, ChevronLeft, ChevronRight, Sparkles, Trophy, Target, BookOpen } from 'lucide-react';
 import stocksData from '../data/stocks.json';
+import AIChat from '../components/AIChat';
 import './Home.css';
 
 interface Stock {
@@ -217,6 +218,12 @@ export default function Home() {
           ))}
         </div>
       </div>
+
+      {/* AI Chat - 新手导师 */}
+      <AIChat 
+        stockName="股票投资"
+        stockCode="general"
+      />
     </div>
   );
 }
