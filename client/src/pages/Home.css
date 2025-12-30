@@ -508,6 +508,74 @@
   color: var(--bear);
 }
 
+/* AI 智能推荐入口卡片 */
+.ai-recommend-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 16px;
+  padding: 14px 16px;
+  background: linear-gradient(135deg, rgba(255, 45, 85, 0.2), rgba(255, 107, 138, 0.2));
+  border: 2px solid rgba(255, 45, 85, 0.4);
+  border-radius: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  animation: ai-recommend-pulse 3s ease-in-out infinite;
+}
+
+@keyframes ai-recommend-pulse {
+  0%, 100% { 
+    border-color: rgba(255, 45, 85, 0.4);
+    box-shadow: 0 4px 20px rgba(255, 45, 85, 0.1);
+  }
+  50% { 
+    border-color: rgba(255, 45, 85, 0.8);
+    box-shadow: 0 8px 30px rgba(255, 45, 85, 0.3);
+  }
+}
+
+.ai-recommend-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(255, 45, 85, 1);
+  box-shadow: 0 12px 40px rgba(255, 45, 85, 0.4);
+  animation: none;
+}
+
+.ai-recommend-icon {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #ff2d55, #ff6b8a);
+  border-radius: 14px;
+  color: white;
+  flex-shrink: 0;
+}
+
+.ai-recommend-info {
+  flex: 1;
+}
+
+.ai-recommend-info h3 {
+  font-size: 16px;
+  font-weight: 700;
+  margin: 0 0 4px;
+  color: white;
+}
+
+.ai-recommend-info p {
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+.ai-recommend-arrow {
+  font-size: 20px;
+  color: #ff6b8a;
+  font-weight: bold;
+}
+
 /* 新手导师入口卡片 */
 .mentor-card {
   display: flex;

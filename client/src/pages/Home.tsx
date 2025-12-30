@@ -100,7 +100,7 @@ export default function Home() {
           <Trophy size={18} className="stat-icon gold" />
           <div className="stat-info">
             <span className="stat-value">12</span>
-            <span className="stat-label">已完成</span>
+            <span className="stat-label">已学习</span>
           </div>
         </div>
         <div className="stat-card">
@@ -119,23 +119,11 @@ export default function Home() {
         </div>
       </div>
 
-      {/* 新手导师入口卡片 - 靠上位置 */}
-      <div className="mentor-card" onClick={() => document.querySelector<HTMLButtonElement>('.ai-chat-fab')?.click()}>
-        <div className="mentor-icon">
-          <Sparkles size={24} />
-        </div>
-        <div className="mentor-info">
-          <h3>🎓 新手导师</h3>
-          <p>有问题？AI导师在线答疑，随时帮你解惑！</p>
-        </div>
-        <div className="mentor-arrow">💬</div>
-      </div>
-
       {/* Card Carousel */}
       <div className="carousel-section">
         <h2 className="carousel-title">
-          <span className="title-icon">📊</span>
-          今日挑战
+          <span className="title-icon">🔥</span>
+          今日热股
         </h2>
 
         <div className="carousel-container">
@@ -181,7 +169,7 @@ export default function Home() {
                       </div>
                       {position === 'active' && (
                         <button className="start-btn">
-                          开始挑战 →
+                          了解一下 →
                         </button>
                       )}
                     </div>
@@ -211,8 +199,8 @@ export default function Home() {
       {/* Quick Access */}
       <div className="quick-access">
         <h2 className="section-title">
-          <span className="title-icon">⚡</span>
-          快速挑战
+          <span className="title-icon">📋</span>
+          热股榜单
         </h2>
         <div className="quick-list">
           {stocks.map((stock, index) => (
@@ -229,6 +217,30 @@ export default function Home() {
             </div>
           ))}
         </div>
+      </div>
+
+      {/* AI 智能推荐入口 */}
+      <div className="ai-recommend-card" onClick={() => navigate('/ai-recommend')}>
+        <div className="ai-recommend-icon">
+          <Target size={24} />
+        </div>
+        <div className="ai-recommend-info">
+          <h3>🤖 AI选股推荐</h3>
+          <p>市场解读+板块分析+个股推荐，今天买什么？</p>
+        </div>
+        <div className="ai-recommend-arrow">→</div>
+      </div>
+
+      {/* 新手导师入口卡片 */}
+      <div className="mentor-card" onClick={() => document.querySelector<HTMLButtonElement>('.ai-chat-fab')?.click()}>
+        <div className="mentor-icon">
+          <Sparkles size={24} />
+        </div>
+        <div className="mentor-info">
+          <h3>🎓 新手导师</h3>
+          <p>有问题？AI导师在线答疑，随时帮你解惑！</p>
+        </div>
+        <div className="mentor-arrow">💬</div>
       </div>
 
       {/* AI Chat - 新手导师 */}

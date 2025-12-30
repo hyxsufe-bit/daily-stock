@@ -1,0 +1,576 @@
+/* AI Chat Container */
+.ai-chat-container {
+  min-height: 100vh;
+  max-width: 500px;
+  margin: 0 auto;
+  background: #f5f5f5;
+  font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+}
+
+/* Header */
+.chat-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  background: #fff;
+  border-bottom: 1px solid #eee;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.back-btn {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  color: #333;
+  border: none;
+}
+
+.header-title {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 17px;
+  font-weight: 600;
+  color: #333;
+}
+
+.header-icon {
+  color: #ff6b00;
+}
+
+.header-action {
+  padding: 6px 14px;
+  background: linear-gradient(135deg, #ff4d4f, #ff7875);
+  border-radius: 16px;
+  font-size: 13px;
+  font-weight: 500;
+  color: white;
+}
+
+/* Chat Content */
+.chat-content {
+  padding: 16px;
+  padding-bottom: 100px;
+}
+
+/* AI Message Wrapper */
+.ai-message-wrapper {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+.ai-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  flex-shrink: 0;
+}
+
+/* 单个回答卡片 */
+.ai-answer-card {
+  flex: 1;
+  background: #fff;
+  border-radius: 0 16px 16px 16px;
+  padding: 16px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+/* 引导文案 */
+.intro-text {
+  font-size: 15px;
+  font-weight: 500;
+  color: #333;
+  line-height: 1.6;
+  margin: 0 0 16px;
+}
+
+/* 热点列表 */
+.hotspots-list {
+  margin-bottom: 20px;
+}
+
+.hotspot-item {
+  margin-bottom: 16px;
+}
+
+.hotspot-item:last-child {
+  margin-bottom: 0;
+}
+
+.hotspot-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.hotspot-emoji {
+  font-size: 20px;
+}
+
+.hotspot-name {
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+}
+
+.hotspot-desc {
+  font-size: 14px;
+  line-height: 1.65;
+  color: #666;
+  margin: 0;
+  padding-left: 28px;
+}
+
+.ref-tag {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  margin-left: 4px;
+  background: #e6f4ff;
+  border: 1px solid #91caff;
+  border-radius: 4px;
+  font-size: 11px;
+  color: #1677ff;
+  vertical-align: middle;
+}
+
+/* 股单包装器 */
+.stock-list-wrapper {
+  margin-top: 24px;
+}
+
+/* 板块情况小标题 */
+.sector-title-text {
+  font-size: 15px;
+  font-weight: 600;
+  color: #333;
+  margin: 0 0 10px;
+  line-height: 1.5;
+}
+
+/* 股单推荐理由概述 - 正文样式 */
+.sector-reason-text {
+  font-size: 14px;
+  line-height: 1.7;
+  color: #666;
+  margin: 0 0 12px;
+}
+
+/* 嵌入式股单卡片 */
+.embedded-stock-list {
+  padding: 14px;
+  background: #fafafa;
+  border: 1px solid #f0f0f0;
+  border-radius: 12px;
+}
+
+/* 股单头部 */
+.stock-list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.stock-list-title {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+}
+
+.hot-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  background: linear-gradient(135deg, #ff4d4f, #ff7875);
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 600;
+  color: white;
+}
+
+/* 右上角股票对比按钮 */
+.btn-compare-header {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 5px 10px;
+  background: #fff;
+  border: 1px solid #d9d9d9;
+  border-radius: 14px;
+  font-size: 12px;
+  color: #666;
+  transition: all 0.2s;
+}
+
+.btn-compare-header:hover,
+.btn-compare-header.active {
+  border-color: #1677ff;
+  color: #1677ff;
+  background: #e6f4ff;
+}
+
+/* 股票项 */
+.stock-item {
+  padding: 12px 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.stock-item:last-of-type {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+/* 股票主信息 */
+.stock-main-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.stock-left {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.stock-left .stock-name {
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+}
+
+.stock-left .stock-code {
+  font-size: 12px;
+  color: #999;
+}
+
+.stock-right {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  text-align: right;
+}
+
+.stock-right .stock-price {
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
+}
+
+.stock-right .stock-change {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.stock-right .stock-change.up {
+  color: #ff4d4f;
+}
+
+.stock-right .stock-change.down {
+  color: #52c41a;
+}
+
+.stock-right .stock-month-change {
+  font-size: 12px;
+  color: #ff4d4f;
+}
+
+/* 标签和按钮行 */
+.stock-bottom-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+
+/* 标签 */
+.stock-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  flex: 1;
+}
+
+.stock-tag {
+  padding: 3px 8px;
+  background: #fff;
+  border: 1px solid #e8e8e8;
+  border-radius: 4px;
+  font-size: 11px;
+  color: #666;
+}
+
+/* 单个股票加自选按钮 */
+.btn-add-single {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  padding: 5px 10px;
+  background: linear-gradient(135deg, #ff4d4f, #ff7875);
+  border: none;
+  border-radius: 14px;
+  font-size: 11px;
+  font-weight: 500;
+  color: white;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: all 0.2s;
+}
+
+.btn-add-single:hover {
+  opacity: 0.9;
+}
+
+.btn-add-single.added {
+  background: linear-gradient(135deg, #52c41a, #73d13d);
+}
+
+/* 一键加自选按钮 */
+.btn-add-all {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+  margin-top: 12px;
+  padding: 10px 0;
+  background: linear-gradient(135deg, #ff4d4f, #ff7875);
+  border: none;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  color: white;
+  transition: all 0.2s;
+}
+
+.btn-add-all:hover {
+  opacity: 0.9;
+}
+
+.btn-add-all.added {
+  background: linear-gradient(135deg, #52c41a, #73d13d);
+}
+
+/* 查看全部按钮 */
+.view-all-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  width: 100%;
+  margin-top: 10px;
+  padding: 10px;
+  background: transparent;
+  border: 1px dashed #d9d9d9;
+  border-radius: 6px;
+  font-size: 12px;
+  color: #999;
+}
+
+.view-all-btn:hover {
+  border-color: #1677ff;
+  color: #1677ff;
+}
+
+/* 底部免责声明 */
+.disclaimer {
+  font-size: 11px;
+  color: #bbb;
+  text-align: center;
+  margin: 20px 0 0;
+  line-height: 1.5;
+}
+
+/* 用户反馈模块 */
+.feedback-module {
+  margin-top: 20px;
+  margin-left: 46px;
+  padding: 16px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.feedback-question {
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+  margin: 0 0 12px;
+  text-align: center;
+}
+
+.feedback-buttons {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+.feedback-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 20px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.feedback-btn.good {
+  background: #f6ffed;
+  border: 1px solid #b7eb8f;
+  color: #52c41a;
+}
+
+.feedback-btn.good:hover,
+.feedback-btn.good.active {
+  background: #52c41a;
+  border-color: #52c41a;
+  color: #fff;
+}
+
+.feedback-btn.bad {
+  background: #fff2f0;
+  border: 1px solid #ffccc7;
+  color: #ff4d4f;
+}
+
+.feedback-btn.bad:hover,
+.feedback-btn.bad.active {
+  background: #ff4d4f;
+  border-color: #ff4d4f;
+  color: #fff;
+}
+
+.feedback-thanks {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.feedback-thanks span {
+  font-size: 18px;
+}
+
+.feedback-thanks p {
+  font-size: 13px;
+  color: #52c41a;
+  margin: 0;
+}
+
+/* 对比栏 */
+.compare-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  background: #fff;
+  border-top: 1px solid #eee;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+  z-index: 200;
+}
+
+.compare-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.compare-count {
+  font-size: 12px;
+  color: #999;
+}
+
+.compare-list {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.compare-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  background: #e6f4ff;
+  border-radius: 4px;
+  font-size: 12px;
+  color: #1677ff;
+}
+
+.compare-item button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 14px;
+  height: 14px;
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 50%;
+  font-size: 10px;
+  color: #999;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.compare-item button:hover {
+  background: #ff4d4f;
+  color: #fff;
+}
+
+.btn-do-compare {
+  padding: 10px 20px;
+  background: linear-gradient(135deg, #1677ff, #4096ff);
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 500;
+  color: white;
+  border: none;
+}
+
+.btn-do-compare:disabled {
+  opacity: 0.5;
+}
+
+/* 响应式 */
+@media (max-width: 400px) {
+  .compare-bar {
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .btn-do-compare {
+    width: 100%;
+  }
+}
