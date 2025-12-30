@@ -5,67 +5,74 @@
   padding: 0 16px 100px;
 }
 
-/* 学习进度卡片 */
-.learn-progress-section {
+/* 探索进度卡片 */
+.explore-progress-section {
   margin-bottom: 16px;
 }
 
-.progress-card {
-  background: linear-gradient(135deg, rgba(102, 126, 234, 0.15), rgba(168, 85, 247, 0.1));
-  border: 1px solid rgba(102, 126, 234, 0.2);
+.explore-progress-card {
+  background: linear-gradient(135deg, rgba(255, 45, 85, 0.1), rgba(168, 85, 247, 0.08));
+  border: 1px solid rgba(255, 45, 85, 0.2);
   border-radius: 14px;
-  padding: 14px;
+  padding: 14px 16px;
 }
 
-.progress-header {
+.explore-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 10px;
 }
 
-.progress-title {
+.explore-title {
   display: flex;
   align-items: center;
   gap: 6px;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 600;
-  color: var(--accent-blue);
+  color: white;
 }
 
-.progress-percent {
-  font-size: 18px;
+.explore-emoji {
+  font-size: 16px;
+}
+
+.explore-percent {
+  font-size: 20px;
   font-weight: 800;
-  color: var(--accent-purple);
+  color: var(--accent-pink);
 }
 
-.progress-bar-wrapper {
-  margin-bottom: 8px;
+.explore-bar-wrapper {
+  margin-bottom: 10px;
 }
 
-.progress-bar-bg {
-  height: 8px;
+.explore-bar-bg {
+  height: 6px;
   background: rgba(255, 255, 255, 0.1);
-  border-radius: 4px;
+  border-radius: 3px;
   overflow: hidden;
 }
 
-.progress-bar-fill {
+.explore-bar-fill {
   height: 100%;
-  background: linear-gradient(90deg, var(--accent-blue), var(--accent-purple));
-  border-radius: 4px;
+  background: linear-gradient(90deg, var(--accent-pink), var(--accent-purple));
+  border-radius: 3px;
   transition: width 0.5s ease;
 }
 
-.progress-stats {
+.explore-stats {
   display: flex;
   justify-content: space-between;
   align-items: center;
   font-size: 12px;
+}
+
+.explore-count {
   color: var(--text-muted);
 }
 
-.progress-reward {
+.explore-reward {
   color: var(--accent-yellow);
   font-weight: 600;
 }

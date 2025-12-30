@@ -206,7 +206,7 @@ export default function Home() {
                       {position === 'active' && (
                         <button className="learn-btn">
                           <BookOpen size={16} />
-                          开始学习
+                          去看看
                           <span className="time-badge">3分钟</span>
                         </button>
                       )}

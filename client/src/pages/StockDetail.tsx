@@ -301,7 +301,31 @@ export default function StockDetail() {
         </div>
       </header>
 
-      {/* Questions Section - 放在最上面 */}
+      {/* 探索进度 - 放在最上面 */}
+      <section className="explore-progress-section">
+        <div className="explore-progress-card">
+          <div className="explore-header">
+            <div className="explore-title">
+              <span className="explore-emoji">🎮</span>
+              <span>探索{stock.name}</span>
+            </div>
+            <span className="explore-percent">{progress}%</span>
+          </div>
+          <div className="explore-bar-wrapper">
+            <div className="explore-bar-bg">
+              <div className="explore-bar-fill" style={{ width: `${progress}%` }} />
+            </div>
+          </div>
+          <div className="explore-stats">
+            <span className="explore-count">已解锁 {learnedCount}/{totalQuestions} 个话题</span>
+            {learnedCount < 3 && (
+              <span className="explore-reward">🃏 再答{Math.max(0, 3 - learnedCount)}题得卡片</span>
+            )}
+          </div>
+        </div>
+      </section>
+
+      {/* Questions Section */}
       <section className="questions-section-swipe">
         <div className="section-header-swipe">
           <div className="title-group">
@@ -401,30 +425,6 @@ export default function StockDetail() {
         </div>
       </section>
 
-      {/* 学习进度卡片 */}
-      <section className="learn-progress-section">
-        <div className="progress-card">
-          <div className="progress-header">
-            <div className="progress-title">
-              <Target size={16} />
-              <span>学习进度</span>
-            </div>
-            <span className="progress-percent">{progress}%</span>
-          </div>
-          <div className="progress-bar-wrapper">
-            <div className="progress-bar-bg">
-              <div 
-                className="progress-bar-fill" 
-                style={{ width: `${progress}%` }}
-              />
-            </div>
-          </div>
-          <div className="progress-stats">
-            <span>已学习 {learnedCount}/{totalQuestions} 个问题</span>
-            {learnedCount < 3 && <span className="progress-reward">🃏 再答{Math.max(0, 3 - learnedCount)}题可获得卡片</span>}
-          </div>
-        </div>
-      </section>
 
       {/* 公司简介 */}
       <section className="company-intro-section">
