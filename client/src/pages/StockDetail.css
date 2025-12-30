@@ -124,6 +124,229 @@
   opacity: 0.9;
 }
 
+/* ====== 左右滑动问题卡片 ====== */
+.questions-section-swipe {
+  margin-bottom: 20px;
+}
+
+.section-header-swipe {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 16px;
+}
+
+.section-header-swipe .title-group {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.section-header-swipe .title-icon-svg {
+  color: var(--accent-purple);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.section-header-swipe .section-title {
+  font-size: 18px;
+  font-weight: 700;
+  margin: 0;
+  color: white;
+}
+
+.section-header-swipe .section-subtitle {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin: 2px 0 0;
+}
+
+.question-counter {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--accent-purple);
+  background: rgba(168, 85, 247, 0.15);
+  padding: 4px 10px;
+  border-radius: 12px;
+}
+
+/* 滑动容器 */
+.swipe-card-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  position: relative;
+}
+
+.swipe-btn {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-card);
+  border-radius: 50%;
+  color: var(--text-secondary);
+  transition: all 0.2s;
+  flex-shrink: 0;
+  z-index: 10;
+}
+
+.swipe-btn:hover {
+  background: var(--bg-card-hover);
+  color: white;
+  transform: scale(1.1);
+}
+
+.swipe-btn:active {
+  transform: scale(0.95);
+}
+
+/* 滑动卡片 */
+.swipe-question-card {
+  flex: 1;
+  min-height: 200px;
+  padding: 20px;
+  border-radius: 20px;
+  border: 1px solid;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  flex-direction: column;
+}
+
+.swipe-question-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
+}
+
+.swipe-question-card.swipe-left {
+  animation: swipeLeft 0.2s ease-out;
+}
+
+.swipe-question-card.swipe-right {
+  animation: swipeRight 0.2s ease-out;
+}
+
+@keyframes swipeLeft {
+  0% { transform: translateX(0); opacity: 1; }
+  100% { transform: translateX(-30px); opacity: 0.5; }
+}
+
+@keyframes swipeRight {
+  0% { transform: translateX(0); opacity: 1; }
+  100% { transform: translateX(30px); opacity: 0.5; }
+}
+
+.swipe-question-card .card-top-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+}
+
+.swipe-question-card .tag-group {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.swipe-question-card .game-type-badge {
+  font-size: 12px;
+  font-weight: 600;
+  color: white;
+  background: linear-gradient(135deg, var(--accent-pink), var(--accent-purple));
+  padding: 4px 10px;
+  border-radius: 10px;
+}
+
+.swipe-question-card .knowledge-tag {
+  font-size: 12px;
+  color: var(--text-secondary);
+  background: rgba(255, 255, 255, 0.08);
+  padding: 4px 10px;
+  border-radius: 10px;
+}
+
+.swipe-question-card .asked-count {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.swipe-question-card .game-question {
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.4;
+  color: white;
+  margin: 0 0 12px;
+  flex: 1;
+}
+
+.swipe-question-card .question-background {
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--text-secondary);
+  margin: 0 0 16px;
+  opacity: 0.8;
+}
+
+.swipe-question-card .card-bottom {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.swipe-hint {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--accent-pink);
+  background: rgba(255, 45, 85, 0.1);
+  padding: 8px 16px;
+  border-radius: 20px;
+  transition: all 0.2s;
+}
+
+.swipe-question-card:hover .swipe-hint {
+  background: rgba(255, 45, 85, 0.2);
+  transform: scale(1.05);
+}
+
+/* 进度指示点 */
+.swipe-dots {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  margin-top: 16px;
+}
+
+.swipe-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.swipe-dot:hover {
+  background: rgba(255, 255, 255, 0.4);
+}
+
+.swipe-dot.active {
+  width: 20px;
+  border-radius: 4px;
+  background: linear-gradient(90deg, var(--accent-pink), var(--accent-purple));
+}
+
+.dots-more {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-left: 4px;
+}
+
 .loading-state,
 .error-state {
   display: flex;

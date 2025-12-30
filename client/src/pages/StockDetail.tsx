@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { ArrowLeft, RefreshCw, Zap, Users, BookOpen, Star, TrendingUp, CheckCircle, Clock, Target } from 'lucide-react';
+import { ArrowLeft, ChevronLeft, ChevronRight, Zap, Users, BookOpen, Star, TrendingUp, Target } from 'lucide-react';
 import stocksData from '../data/stocks.json';
 import AIChat from '../components/AIChat';
 import './StockDetail.css';
@@ -48,19 +48,21 @@ export default function StockDetail() {
   const [stock, setStock] = useState<Stock | null>(null);
   const [loading, setLoading] = useState(true);
   const [questionPool, setQuestionPool] = useState<Question[]>([]);
-  const [displayQuestions, setDisplayQuestions] = useState<Question[]>([]);
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [isWatchlisted, setIsWatchlisted] = useState(false);
   const [learnedCount, setLearnedCount] = useState(0);
   const [totalQuestions, setTotalQuestions] = useState(0);
+  const [touchStart, setTouchStart] = useState(0);
+  const [touchEnd, setTouchEnd] = useState(0);
+  const [swipeDirection, setSwipeDirection] = useState<'left' | 'right' | null>(null);
 
   useEffect(() => {
-    // 使用本地数据
     const foundStock = (stocksData as Stock[]).find(s => s.code === stockCode);
     if (foundStock) {
       setStock(foundStock);
-      setQuestionPool(foundStock.questions);
+      const shuffled = [...foundStock.questions].sort(() => Math.random() - 0.5);
+      setQuestionPool(shuffled);
       setTotalQuestions(foundStock.questions.length);
-      shuffleQuestions(foundStock.questions);
       loadLearnProgress(stockCode!);
     }
     setLoading(false);
@@ -80,13 +82,42 @@ export default function StockDetail() {
     return Math.round((learnedCount / totalQuestions) * 100);
   };
 
-  const shuffleQuestions = (questions: Question[]) => {
-    const shuffled = [...questions].sort(() => Math.random() - 0.5);
-    setDisplayQuestions(shuffled.slice(0, 3));
+  const nextQuestion = () => {
+    setSwipeDirection('left');
+    setTimeout(() => {
+      setCurrentQuestionIndex((prev) => (prev + 1) % questionPool.length);
+      setSwipeDirection(null);
+    }, 200);
   };
 
-  const handleShuffle = () => {
-    shuffleQuestions(questionPool);
+  const prevQuestion = () => {
+    setSwipeDirection('right');
+    setTimeout(() => {
+      setCurrentQuestionIndex((prev) => (prev - 1 + questionPool.length) % questionPool.length);
+      setSwipeDirection(null);
+    }, 200);
+  };
+
+  // Touch handlers for swipe
+  const handleTouchStart = (e: React.TouchEvent) => {
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchEnd = () => {
+    if (!touchStart || !touchEnd) return;
+    const distance = touchStart - touchEnd;
+    const minSwipeDistance = 50;
+    if (distance > minSwipeDistance) {
+      nextQuestion();
+    } else if (distance < -minSwipeDistance) {
+      prevQuestion();
+    }
+    setTouchStart(0);
+    setTouchEnd(0);
   };
 
   const handleAddWatchlist = () => {
@@ -207,6 +238,8 @@ export default function StockDetail() {
 
   const progress = getLearnProgress();
 
+  const currentQuestion = questionPool[currentQuestionIndex];
+
   return (
     <div className="detail-container">
       {/* Header */}
@@ -225,6 +258,86 @@ export default function StockDetail() {
           </span>
         </div>
       </header>
+
+      {/* Questions Section - 放在最上面 */}
+      <section className="questions-section-swipe">
+        <div className="section-header-swipe">
+          <div className="title-group">
+            <BookOpen size={20} className="title-icon-svg" />
+            <div>
+              <h2 className="section-title">大家都在问</h2>
+              <p className="section-subtitle">左右滑动探索更多问题</p>
+            </div>
+          </div>
+          <span className="question-counter">
+            {currentQuestionIndex + 1}/{questionPool.length}
+          </span>
+        </div>
+
+        {/* 左右滑动卡片区域 */}
+        <div 
+          className="swipe-card-container"
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleTouchEnd}
+        >
+          <button className="swipe-btn prev" onClick={prevQuestion}>
+            <ChevronLeft size={24} />
+          </button>
+
+          {currentQuestion && (
+            <div 
+              className={`swipe-question-card ${swipeDirection ? `swipe-${swipeDirection}` : ''}`}
+              style={{ 
+                background: getCardStyle(currentQuestionIndex % 3).bg,
+                borderColor: getCardStyle(currentQuestionIndex % 3).border
+              }}
+              onClick={() => navigate(`/game/${stock.code}/${currentQuestion.id}`)}
+            >
+              <div className="card-top-row">
+                <div className="tag-group">
+                  <span className="game-type-badge">
+                    {getTypeIcon(currentQuestion.type)} {getTypeLabel(currentQuestion.type)}
+                  </span>
+                  <span className="knowledge-tag">
+                    {currentQuestion.knowledgeTag || currentQuestion.category}
+                  </span>
+                </div>
+                <span className="asked-count">
+                  <Users size={12} />
+                  {formatAskedCount(currentQuestion.askedCount)}人学过
+                </span>
+              </div>
+              
+              <h3 className="game-question">{currentQuestion.question}</h3>
+              
+              {getQuestionBackground(currentQuestion) && (
+                <p className="question-background">{getQuestionBackground(currentQuestion)}</p>
+              )}
+              
+              <div className="card-bottom">
+                <span className="swipe-hint">👆 点击开始学习</span>
+              </div>
+            </div>
+          )}
+
+          <button className="swipe-btn next" onClick={nextQuestion}>
+            <ChevronRight size={24} />
+          </button>
+        </div>
+
+        {/* 进度指示器 */}
+        <div className="swipe-dots">
+          {questionPool.slice(0, Math.min(questionPool.length, 10)).map((_, index) => (
+            <span
+              key={index}
+              className={`swipe-dot ${index === currentQuestionIndex ? 'active' : ''}`}
+              onClick={() => setCurrentQuestionIndex(index)}
+            />
+          ))}
+          {questionPool.length > 10 && <span className="dots-more">...</span>}
+        </div>
+      </section>
 
       {/* 学习进度卡片 */}
       <section className="learn-progress-section">
@@ -246,12 +359,12 @@ export default function StockDetail() {
           </div>
           <div className="progress-stats">
             <span>已学习 {learnedCount}/{totalQuestions} 个问题</span>
-            {progress >= 30 && <span className="progress-reward">🃏 再答{Math.max(0, 3 - learnedCount)}题可获得卡片</span>}
+            {learnedCount < 3 && <span className="progress-reward">🃏 再答{Math.max(0, 3 - learnedCount)}题可获得卡片</span>}
           </div>
         </div>
       </section>
 
-      {/* 公司简介 - 更详细的背景信息 */}
+      {/* 公司简介 */}
       <section className="company-intro-section">
         <div className="intro-card">
           <div className="intro-header">
@@ -273,73 +386,6 @@ export default function StockDetail() {
             </div>
           )}
         </div>
-      </section>
-
-      {/* Questions Section - Core Feature */}
-      <section className="questions-section">
-        <div className="section-header">
-          <div className="title-group">
-            <BookOpen size={20} className="title-icon-svg" />
-            <div>
-              <h2 className="section-title">大家都在问</h2>
-              <p className="section-subtitle">通过热门问题，快速认识{stock.name}</p>
-            </div>
-          </div>
-          <button className="shuffle-btn" onClick={handleShuffle}>
-            <RefreshCw size={14} />
-            换一批
-          </button>
-        </div>
-
-        <div className="question-cards">
-          {displayQuestions.map((q, index) => {
-            const style = getCardStyle(index);
-            return (
-              <div
-                key={q.id}
-                className="question-game-card"
-                style={{ 
-                  background: style.bg,
-                  borderColor: style.border,
-                  animationDelay: `${index * 0.1}s`
-                }}
-                onClick={() => navigate(`/game/${stock.code}/${q.id}`)}
-              >
-                <div className="card-top-row">
-                  <div className="tag-group">
-                    <span className="game-type-badge">
-                      {getTypeIcon(q.type)} {getTypeLabel(q.type)}
-                    </span>
-                    <span className="knowledge-tag">
-                      {q.knowledgeTag || q.category}
-                    </span>
-                  </div>
-                  <span className="asked-count">
-                    <Users size={12} />
-                    {formatAskedCount(q.askedCount)}人学过
-                  </span>
-                </div>
-                
-                {/* Question title first */}
-                <h3 className="game-question">{q.question}</h3>
-                
-                {/* Background info - subtle display below question */}
-                {getQuestionBackground(q) && (
-                  <p className="question-background">{getQuestionBackground(q)}</p>
-                )}
-                
-                <div className="card-bottom">
-                  <span className="learn-hint">点击学习 →</span>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-
-        <button className="view-all-btn" onClick={handleShuffle}>
-          <RefreshCw size={14} />
-          探索更多问题（共{questionPool.length}个）
-        </button>
       </section>
 
       {/* Bottom CTA */}
