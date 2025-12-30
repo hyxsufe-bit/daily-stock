@@ -55,6 +55,7 @@ export default function StockDetail() {
   const [touchStart, setTouchStart] = useState(0);
   const [touchEnd, setTouchEnd] = useState(0);
   const [swipeDirection, setSwipeDirection] = useState<'left' | 'right' | null>(null);
+  const [activeFilter, setActiveFilter] = useState<string>('all');
 
   useEffect(() => {
     const foundStock = (stocksData as Stock[]).find(s => s.code === stockCode);
@@ -82,13 +83,45 @@ export default function StockDetail() {
     return Math.round((learnedCount / totalQuestions) * 100);
   };
 
+  // 根据筛选条件过滤问题
+  const filteredQuestions = activeFilter === 'all' 
+    ? questionPool 
+    : questionPool.filter(q => q.type === activeFilter);
+
   // 每页显示3个问题
   const questionsPerPage = 3;
-  const totalPages = Math.ceil(questionPool.length / questionsPerPage);
+  const totalPages = Math.ceil(filteredQuestions.length / questionsPerPage);
   
   const getCurrentPageQuestions = () => {
     const start = currentQuestionIndex * questionsPerPage;
-    return questionPool.slice(start, start + questionsPerPage);
+    return filteredQuestions.slice(start, start + questionsPerPage);
+  };
+
+  // 获取问题类型对应的卡片颜色
+  const getTypeCardStyle = (type: string) => {
+    switch (type) {
+      case 'battle':
+        return { bg: 'linear-gradient(135deg, rgba(255, 45, 85, 0.12), rgba(255, 45, 85, 0.05))', border: 'rgba(255, 45, 85, 0.3)' };
+      case 'slider':
+        return { bg: 'linear-gradient(135deg, rgba(0, 212, 255, 0.12), rgba(0, 212, 255, 0.05))', border: 'rgba(0, 212, 255, 0.3)' };
+      case 'trueFalse':
+        return { bg: 'linear-gradient(135deg, rgba(46, 213, 115, 0.12), rgba(46, 213, 115, 0.05))', border: 'rgba(46, 213, 115, 0.3)' };
+      default:
+        return { bg: 'linear-gradient(135deg, rgba(168, 85, 247, 0.12), rgba(168, 85, 247, 0.05))', border: 'rgba(168, 85, 247, 0.3)' };
+    }
+  };
+
+  // 筛选标签配置
+  const filterTags = [
+    { id: 'all', label: '全部', emoji: '📋' },
+    { id: 'battle', label: '选立场', emoji: '🤔' },
+    { id: 'slider', label: '猜数据', emoji: '🎯' },
+    { id: 'trueFalse', label: '辨真假', emoji: '✅' },
+  ];
+
+  const handleFilterChange = (filterId: string) => {
+    setActiveFilter(filterId);
+    setCurrentQuestionIndex(0);
   };
 
   const nextPage = () => {
@@ -275,12 +308,26 @@ export default function StockDetail() {
             <BookOpen size={20} className="title-icon-svg" />
             <div>
               <h2 className="section-title">🔥 热门话题</h2>
-              <p className="section-subtitle">左右滑动查看更多</p>
+              <p className="section-subtitle">点击标签筛选话题类型</p>
             </div>
           </div>
           <span className="question-counter">
-            {currentQuestionIndex + 1}/{totalPages}
+            {currentQuestionIndex + 1}/{totalPages || 1}
           </span>
+        </div>
+
+        {/* 话题类型筛选标签 */}
+        <div className="filter-tags">
+          {filterTags.map(tag => (
+            <button
+              key={tag.id}
+              className={`filter-tag ${activeFilter === tag.id ? 'active' : ''}`}
+              onClick={() => handleFilterChange(tag.id)}
+            >
+              <span className="tag-emoji">{tag.emoji}</span>
+              <span className="tag-label">{tag.label}</span>
+            </button>
+          ))}
         </div>
 
         {/* 左右滑动卡片区域 */}
@@ -295,19 +342,19 @@ export default function StockDetail() {
           </button>
 
           <div className={`question-cards-list ${swipeDirection ? `swipe-${swipeDirection}` : ''}`}>
-            {currentPageQuestions.map((q, index) => (
+            {currentPageQuestions.length > 0 ? currentPageQuestions.map((q, index) => (
               <div 
                 key={q.id}
-                className="question-card-item"
+                className={`question-card-item type-${q.type}`}
                 style={{ 
-                  background: getCardStyle(index).bg,
-                  borderColor: getCardStyle(index).border
+                  background: getTypeCardStyle(q.type).bg,
+                  borderColor: getTypeCardStyle(q.type).border
                 }}
                 onClick={() => navigate(`/game/${stock.code}/${q.id}`)}
               >
                 <div className="card-top-row">
                   <div className="tag-group">
-                    <span className="game-type-badge">
+                    <span className={`game-type-badge type-${q.type}`}>
                       {getTypeIcon(q.type)} {getTypeLabel(q.type)}
                     </span>
                     <span className="knowledge-tag">
@@ -330,7 +377,11 @@ export default function StockDetail() {
                   <span className="learn-arrow">→</span>
                 </div>
               </div>
-            ))}
+            )) : (
+              <div className="empty-state">
+                <p>暂无该类型话题</p>
+              </div>
+            )}
           </div>
 
           <button className="swipe-nav-btn next" onClick={nextPage}>

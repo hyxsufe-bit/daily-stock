@@ -170,6 +170,51 @@
   border-radius: 12px;
 }
 
+/* 话题类型筛选标签 */
+.filter-tags {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 14px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+}
+
+.filter-tags::-webkit-scrollbar {
+  display: none;
+}
+
+.filter-tag {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 12px;
+  border-radius: 16px;
+  background: var(--bg-card);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: 12px;
+  color: var(--text-secondary);
+  white-space: nowrap;
+  transition: all 0.2s;
+}
+
+.filter-tag:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.filter-tag.active {
+  background: linear-gradient(135deg, var(--accent-pink), var(--accent-purple));
+  border-color: transparent;
+  color: white;
+}
+
+.filter-tag .tag-emoji {
+  font-size: 13px;
+}
+
+.filter-tag .tag-label {
+  font-weight: 500;
+}
+
 /* 滑动容器 */
 .swipe-cards-wrapper {
   display: flex;
@@ -260,9 +305,32 @@
   font-size: 11px;
   font-weight: 600;
   color: white;
-  background: linear-gradient(135deg, var(--accent-pink), var(--accent-purple));
   padding: 3px 8px;
   border-radius: 8px;
+}
+
+/* 不同类型的徽章颜色 */
+.game-type-badge.type-battle {
+  background: linear-gradient(135deg, #ff2d55, #ff6b8a);
+}
+
+.game-type-badge.type-slider {
+  background: linear-gradient(135deg, #00d4ff, #0099cc);
+}
+
+.game-type-badge.type-trueFalse {
+  background: linear-gradient(135deg, #2ed573, #1e8449);
+}
+
+/* 空状态 */
+.empty-state {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  color: var(--text-muted);
+  font-size: 14px;
 }
 
 .question-card-item .knowledge-tag {

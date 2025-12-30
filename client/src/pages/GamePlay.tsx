@@ -694,7 +694,10 @@ export default function GamePlay() {
 
           {/* Reaction Buttons */}
           <div className="reaction-section">
-            <p className="reaction-label">你的感受：</p>
+            <div className="reaction-header">
+              <p className="reaction-label">你的感受：</p>
+              <span className="reaction-count">👥 {Math.floor(Math.random() * 500 + 200)}人已互动</span>
+            </div>
             <div className="reaction-buttons">
               {reactions.map(r => (
                 <button
