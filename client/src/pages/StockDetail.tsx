@@ -265,8 +265,8 @@ export default function StockDetail() {
           <div className="title-group">
             <BookOpen size={20} className="title-icon-svg" />
             <div>
-              <h2 className="section-title">🔥 投资必知</h2>
-              <p className="section-subtitle">左右滑动，快速掌握核心知识</p>
+              <h2 className="section-title">🔥 热门话题</h2>
+              <p className="section-subtitle">左右滑动，3分钟搞懂{stock.name}</p>
             </div>
           </div>
           <span className="question-counter">
