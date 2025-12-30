@@ -55,7 +55,6 @@ export default function StockDetail() {
   const [touchStart, setTouchStart] = useState(0);
   const [touchEnd, setTouchEnd] = useState(0);
   const [swipeDirection, setSwipeDirection] = useState<'left' | 'right' | null>(null);
-  const [activeFilter, setActiveFilter] = useState<string>('all');
 
   useEffect(() => {
     const foundStock = (stocksData as Stock[]).find(s => s.code === stockCode);
@@ -83,18 +82,13 @@ export default function StockDetail() {
     return Math.round((learnedCount / totalQuestions) * 100);
   };
 
-  // 根据筛选条件过滤问题
-  const filteredQuestions = activeFilter === 'all' 
-    ? questionPool 
-    : questionPool.filter(q => q.type === activeFilter);
-
   // 每页显示3个问题
   const questionsPerPage = 3;
-  const totalPages = Math.ceil(filteredQuestions.length / questionsPerPage);
+  const totalPages = Math.ceil(questionPool.length / questionsPerPage);
   
   const getCurrentPageQuestions = () => {
     const start = currentQuestionIndex * questionsPerPage;
-    return filteredQuestions.slice(start, start + questionsPerPage);
+    return questionPool.slice(start, start + questionsPerPage);
   };
 
   // 获取问题类型对应的卡片颜色
@@ -111,16 +105,9 @@ export default function StockDetail() {
     }
   };
 
-  // 筛选标签配置
-  const filterTags = [
-    { id: 'all', label: '全部', emoji: '📋' },
-    { id: 'battle', label: '选立场', emoji: '🤔' },
-    { id: 'slider', label: '猜数据', emoji: '🎯' },
-    { id: 'trueFalse', label: '辨真假', emoji: '✅' },
-  ];
-
-  const handleFilterChange = (filterId: string) => {
-    setActiveFilter(filterId);
+  const handleShuffle = () => {
+    const shuffled = [...questionPool].sort(() => Math.random() - 0.5);
+    setQuestionPool(shuffled);
     setCurrentQuestionIndex(0);
   };
 
@@ -332,26 +319,12 @@ export default function StockDetail() {
             <BookOpen size={20} className="title-icon-svg" />
             <div>
               <h2 className="section-title">🔥 热门话题</h2>
-              <p className="section-subtitle">点击标签筛选话题类型</p>
+              <p className="section-subtitle">左右滑动查看更多</p>
             </div>
           </div>
-          <span className="question-counter">
-            {currentQuestionIndex + 1}/{totalPages || 1}
-          </span>
-        </div>
-
-        {/* 话题类型筛选标签 */}
-        <div className="filter-tags">
-          {filterTags.map(tag => (
-            <button
-              key={tag.id}
-              className={`filter-tag ${activeFilter === tag.id ? 'active' : ''}`}
-              onClick={() => handleFilterChange(tag.id)}
-            >
-              <span className="tag-emoji">{tag.emoji}</span>
-              <span className="tag-label">{tag.label}</span>
-            </button>
-          ))}
+          <button className="shuffle-btn" onClick={handleShuffle}>
+            🔄 换一换
+          </button>
         </div>
 
         {/* 左右滑动卡片区域 */}
@@ -366,7 +339,7 @@ export default function StockDetail() {
           </button>
 
           <div className={`question-cards-list ${swipeDirection ? `swipe-${swipeDirection}` : ''}`}>
-            {currentPageQuestions.length > 0 ? currentPageQuestions.map((q, index) => (
+            {currentPageQuestions.map((q, index) => (
               <div 
                 key={q.id}
                 className={`question-card-item type-${q.type}`}
@@ -400,10 +373,6 @@ export default function StockDetail() {
                   </span>
                   <span className="learn-arrow">→</span>
                 </div>
-              </div>
-            )) : (
-              <div className="empty-state">
-                <p>暂无该类型话题</p>
               </div>
             )}
           </div>

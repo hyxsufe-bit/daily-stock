@@ -168,58 +168,26 @@
   margin: 2px 0 0;
 }
 
-.question-counter {
+.shuffle-btn {
+  display: flex;
+  align-items: center;
+  gap: 4px;
   font-size: 13px;
   font-weight: 600;
   color: var(--accent-purple);
   background: rgba(168, 85, 247, 0.15);
-  padding: 4px 10px;
-  border-radius: 12px;
-}
-
-/* 话题类型筛选标签 */
-.filter-tags {
-  display: flex;
-  gap: 8px;
-  margin-bottom: 14px;
-  overflow-x: auto;
-  padding-bottom: 4px;
-}
-
-.filter-tags::-webkit-scrollbar {
-  display: none;
-}
-
-.filter-tag {
-  display: flex;
-  align-items: center;
-  gap: 4px;
   padding: 6px 12px;
   border-radius: 16px;
-  background: var(--bg-card);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  font-size: 12px;
-  color: var(--text-secondary);
-  white-space: nowrap;
   transition: all 0.2s;
 }
 
-.filter-tag:hover {
-  background: rgba(255, 255, 255, 0.08);
+.shuffle-btn:hover {
+  background: rgba(168, 85, 247, 0.25);
+  transform: scale(1.05);
 }
 
-.filter-tag.active {
-  background: linear-gradient(135deg, var(--accent-pink), var(--accent-purple));
-  border-color: transparent;
-  color: white;
-}
-
-.filter-tag .tag-emoji {
-  font-size: 13px;
-}
-
-.filter-tag .tag-label {
-  font-weight: 500;
+.shuffle-btn:active {
+  transform: scale(0.95);
 }
 
 /* 滑动容器 */
