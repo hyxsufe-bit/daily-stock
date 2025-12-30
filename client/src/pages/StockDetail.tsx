@@ -82,18 +82,27 @@ export default function StockDetail() {
     return Math.round((learnedCount / totalQuestions) * 100);
   };
 
-  const nextQuestion = () => {
+  // 每页显示3个问题
+  const questionsPerPage = 3;
+  const totalPages = Math.ceil(questionPool.length / questionsPerPage);
+  
+  const getCurrentPageQuestions = () => {
+    const start = currentQuestionIndex * questionsPerPage;
+    return questionPool.slice(start, start + questionsPerPage);
+  };
+
+  const nextPage = () => {
     setSwipeDirection('left');
     setTimeout(() => {
-      setCurrentQuestionIndex((prev) => (prev + 1) % questionPool.length);
+      setCurrentQuestionIndex((prev) => (prev + 1) % totalPages);
       setSwipeDirection(null);
     }, 200);
   };
 
-  const prevQuestion = () => {
+  const prevPage = () => {
     setSwipeDirection('right');
     setTimeout(() => {
-      setCurrentQuestionIndex((prev) => (prev - 1 + questionPool.length) % questionPool.length);
+      setCurrentQuestionIndex((prev) => (prev - 1 + totalPages) % totalPages);
       setSwipeDirection(null);
     }, 200);
   };
@@ -112,9 +121,9 @@ export default function StockDetail() {
     const distance = touchStart - touchEnd;
     const minSwipeDistance = 50;
     if (distance > minSwipeDistance) {
-      nextQuestion();
+      nextPage();
     } else if (distance < -minSwipeDistance) {
-      prevQuestion();
+      prevPage();
     }
     setTouchStart(0);
     setTouchEnd(0);
@@ -238,7 +247,7 @@ export default function StockDetail() {
 
   const progress = getLearnProgress();
 
-  const currentQuestion = questionPool[currentQuestionIndex];
+  const currentPageQuestions = getCurrentPageQuestions();
 
   return (
     <div className="detail-container">
@@ -266,76 +275,78 @@ export default function StockDetail() {
             <BookOpen size={20} className="title-icon-svg" />
             <div>
               <h2 className="section-title">🔥 热门话题</h2>
-              <p className="section-subtitle">左右滑动，3分钟搞懂{stock.name}</p>
+              <p className="section-subtitle">左右滑动查看更多</p>
             </div>
           </div>
           <span className="question-counter">
-            {currentQuestionIndex + 1}/{questionPool.length}
+            {currentQuestionIndex + 1}/{totalPages}
           </span>
         </div>
 
         {/* 左右滑动卡片区域 */}
         <div 
-          className="swipe-card-container"
+          className="swipe-cards-wrapper"
           onTouchStart={handleTouchStart}
           onTouchMove={handleTouchMove}
           onTouchEnd={handleTouchEnd}
         >
-          <button className="swipe-btn prev" onClick={prevQuestion}>
-            <ChevronLeft size={24} />
+          <button className="swipe-nav-btn prev" onClick={prevPage}>
+            <ChevronLeft size={20} />
           </button>
 
-          {currentQuestion && (
-            <div 
-              className={`swipe-question-card ${swipeDirection ? `swipe-${swipeDirection}` : ''}`}
-              style={{ 
-                background: getCardStyle(currentQuestionIndex % 3).bg,
-                borderColor: getCardStyle(currentQuestionIndex % 3).border
-              }}
-              onClick={() => navigate(`/game/${stock.code}/${currentQuestion.id}`)}
-            >
-              <div className="card-top-row">
-                <div className="tag-group">
-                  <span className="game-type-badge">
-                    {getTypeIcon(currentQuestion.type)} {getTypeLabel(currentQuestion.type)}
-                  </span>
-                  <span className="knowledge-tag">
-                    {currentQuestion.knowledgeTag || currentQuestion.category}
-                  </span>
+          <div className={`question-cards-list ${swipeDirection ? `swipe-${swipeDirection}` : ''}`}>
+            {currentPageQuestions.map((q, index) => (
+              <div 
+                key={q.id}
+                className="question-card-item"
+                style={{ 
+                  background: getCardStyle(index).bg,
+                  borderColor: getCardStyle(index).border
+                }}
+                onClick={() => navigate(`/game/${stock.code}/${q.id}`)}
+              >
+                <div className="card-top-row">
+                  <div className="tag-group">
+                    <span className="game-type-badge">
+                      {getTypeIcon(q.type)} {getTypeLabel(q.type)}
+                    </span>
+                    <span className="knowledge-tag">
+                      {q.knowledgeTag || q.category}
+                    </span>
+                  </div>
                 </div>
-                <span className="asked-count">
-                  <Users size={12} />
-                  {formatAskedCount(currentQuestion.askedCount)}人学过
-                </span>
+                
+                <h3 className="game-question">{q.question}</h3>
+                
+                {getQuestionBackground(q) && (
+                  <p className="question-background">{getQuestionBackground(q)}</p>
+                )}
+                
+                <div className="card-bottom">
+                  <span className="asked-count">
+                    <Users size={12} />
+                    {formatAskedCount(q.askedCount)}人学过
+                  </span>
+                  <span className="learn-arrow">→</span>
+                </div>
               </div>
-              
-              <h3 className="game-question">{currentQuestion.question}</h3>
-              
-              {getQuestionBackground(currentQuestion) && (
-                <p className="question-background">{getQuestionBackground(currentQuestion)}</p>
-              )}
-              
-              <div className="card-bottom">
-                <span className="swipe-hint">👆 点击开始学习</span>
-              </div>
-            </div>
-          )}
+            ))}
+          </div>
 
-          <button className="swipe-btn next" onClick={nextQuestion}>
-            <ChevronRight size={24} />
+          <button className="swipe-nav-btn next" onClick={nextPage}>
+            <ChevronRight size={20} />
           </button>
         </div>
 
         {/* 进度指示器 */}
         <div className="swipe-dots">
-          {questionPool.slice(0, Math.min(questionPool.length, 10)).map((_, index) => (
+          {Array.from({ length: totalPages }).map((_, index) => (
             <span
               key={index}
               className={`swipe-dot ${index === currentQuestionIndex ? 'active' : ''}`}
               onClick={() => setCurrentQuestionIndex(index)}
             />
           ))}
-          {questionPool.length > 10 && <span className="dots-more">...</span>}
         </div>
       </section>
 
