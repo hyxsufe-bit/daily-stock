@@ -237,14 +237,9 @@ export default function Home() {
                         <button className="learn-btn">
                           <BookOpen size={16} />
                           开始学习
+                          <span className="time-badge">3分钟</span>
                         </button>
                       )}
-                    </div>
-
-                    {/* 学习时长提示 */}
-                    <div className="time-hint">
-                      <Clock size={12} />
-                      <span>约3分钟</span>
                     </div>
                   </div>
                 </div>

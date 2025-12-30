@@ -245,7 +245,7 @@
 
 .card-stack {
   flex: 1;
-  height: 320px;
+  height: 360px;
   position: relative;
   perspective: 1000px;
 }
@@ -307,6 +307,8 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 12px;
+  position: relative;
+  z-index: 2;
 }
 
 .industry-tag {
@@ -346,12 +348,12 @@
 /* AI简介 */
 .stock-summary {
   font-size: 14px;
-  line-height: 1.6;
+  line-height: 1.7;
   color: var(--text-secondary);
   margin: 0 0 16px;
   flex: 1;
   display: -webkit-box;
-  -webkit-line-clamp: 3;
+  -webkit-line-clamp: 5;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
@@ -410,19 +412,13 @@
   box-shadow: 0 8px 20px rgba(255, 45, 85, 0.4);
 }
 
-/* 学习时长提示 */
-.time-hint {
-  position: absolute;
-  top: 16px;
-  right: 16px;
-  display: flex;
-  align-items: center;
-  gap: 4px;
+.time-badge {
   font-size: 11px;
-  color: var(--text-muted);
-  background: rgba(0, 0, 0, 0.3);
-  padding: 4px 8px;
-  border-radius: 8px;
+  font-weight: 500;
+  background: rgba(255, 255, 255, 0.2);
+  padding: 2px 6px;
+  border-radius: 6px;
+  margin-left: 4px;
 }
 
 /* 进度点 */
