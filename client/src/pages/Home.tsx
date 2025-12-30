@@ -111,75 +111,21 @@ export default function Home() {
 
   return (
     <div className="home-container">
-      {/* 今日任务卡片 */}
-      <div className="daily-mission">
-        <div className="mission-header">
-          <div className="mission-time">
-            <Clock size={16} />
-            <span>每天3分钟</span>
-          </div>
-          <div className="mission-streak">
+      {/* 顶部简洁标题 */}
+      <div className="top-header">
+        <div className="header-left">
+          <h1 className="app-title">🔥 今日热股</h1>
+          <p className="app-subtitle">每天3分钟，认识一只股票</p>
+        </div>
+        <div className="header-right">
+          <div className="streak-badge">
             <span className="streak-emoji">{getStreakEmoji()}</span>
-            <span className="streak-text">连续{streak}天</span>
-          </div>
-        </div>
-        
-        <h1 className="mission-title">
-          {todayCompleted ? '✅ 今日任务已完成！' : '📚 今日任务'}
-        </h1>
-        
-        <p className="mission-desc">
-          {todayCompleted 
-            ? `太棒了！你已完成今日学习，明天继续保持！` 
-            : `认识一只热门股票，了解它的投资价值`}
-        </p>
-
-        {/* 进度条 */}
-        <div className="mission-progress">
-          <div className="progress-bar">
-            <div 
-              className="progress-fill" 
-              style={{ width: todayCompleted ? '100%' : '0%' }}
-            />
-          </div>
-          <span className="progress-text">{todayCompleted ? '1/1' : '0/1'}</span>
-        </div>
-      </div>
-
-      {/* 激励语 */}
-      <div className="encouragement-banner">
-        <Sparkles size={16} />
-        <span>{getEncouragement()}</span>
-      </div>
-
-      {/* 学习成就概览 */}
-      <div className="achievement-bar">
-        <div className="achievement-item">
-          <div className="achievement-icon">📈</div>
-          <div className="achievement-info">
-            <span className="achievement-value">{totalLearned}</span>
-            <span className="achievement-label">已学股票</span>
-          </div>
-        </div>
-        <div className="achievement-divider" />
-        <div className="achievement-item">
-          <div className="achievement-icon">{getStreakEmoji()}</div>
-          <div className="achievement-info">
-            <span className="achievement-value">{streak}天</span>
-            <span className="achievement-label">{getStreakMessage()}</span>
-          </div>
-        </div>
-        <div className="achievement-divider" />
-        <div className="achievement-item clickable" onClick={() => navigate('/collection')}>
-          <div className="achievement-icon">🃏</div>
-          <div className="achievement-info">
-            <span className="achievement-value">查看</span>
-            <span className="achievement-label">收藏卡片</span>
+            <span>{streak}天</span>
           </div>
         </div>
       </div>
 
-      {/* 今日推荐股票 */}
+      {/* 今日推荐股票 - 放在最前面 */}
       <div className="today-stock-section">
         <div className="section-header">
           <h2>
@@ -261,6 +207,50 @@ export default function Home() {
               onClick={() => setCurrentIndex(index)}
             />
           ))}
+        </div>
+      </div>
+
+      {/* 今日任务进度 */}
+      <div className="daily-mission-compact">
+        <div className="mission-left">
+          <span className="mission-icon">{todayCompleted ? '✅' : '📚'}</span>
+          <div className="mission-text">
+            <span className="mission-label">{todayCompleted ? '今日已完成' : '今日任务'}</span>
+            <span className="mission-hint">认识1只热股</span>
+          </div>
+        </div>
+        <div className="mission-right">
+          <div className="mini-progress">
+            <div className="mini-progress-fill" style={{ width: todayCompleted ? '100%' : '0%' }} />
+          </div>
+          <span className="mission-status">{todayCompleted ? '1/1' : '0/1'}</span>
+        </div>
+      </div>
+
+      {/* 学习成就概览 */}
+      <div className="achievement-bar">
+        <div className="achievement-item">
+          <div className="achievement-icon">📈</div>
+          <div className="achievement-info">
+            <span className="achievement-value">{totalLearned}</span>
+            <span className="achievement-label">已学股票</span>
+          </div>
+        </div>
+        <div className="achievement-divider" />
+        <div className="achievement-item">
+          <div className="achievement-icon">{getStreakEmoji()}</div>
+          <div className="achievement-info">
+            <span className="achievement-value">{streak}天</span>
+            <span className="achievement-label">{getStreakMessage()}</span>
+          </div>
+        </div>
+        <div className="achievement-divider" />
+        <div className="achievement-item clickable" onClick={() => navigate('/collection')}>
+          <div className="achievement-icon">🃏</div>
+          <div className="achievement-info">
+            <span className="achievement-value">查看</span>
+            <span className="achievement-label">收藏卡片</span>
+          </div>
         </div>
       </div>
 
