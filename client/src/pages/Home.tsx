@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Flame, ChevronLeft, ChevronRight, Sparkles, Trophy, Target, BookOpen } from 'lucide-react';
+import { Flame, ChevronLeft, ChevronRight, Sparkles, Trophy, Clock, CheckCircle, Star, Gift, BookOpen } from 'lucide-react';
 import stocksData from '../data/stocks.json';
 import AIChat from '../components/AIChat';
 import './Home.css';
@@ -13,6 +13,14 @@ interface Stock {
   heatIndex: number;
   heatTags: string[];
   aiSummary: string;
+  industry?: string;
+}
+
+interface DailyProgress {
+  date: string;
+  completed: boolean;
+  stockCode?: string;
+  stockName?: string;
 }
 
 export default function Home() {
@@ -20,13 +28,28 @@ export default function Home() {
   const [stocks, setStocks] = useState<Stock[]>([]);
   const [loading, setLoading] = useState(true);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [streak] = useState(3);
+  const [streak, setStreak] = useState(0);
+  const [todayCompleted, setTodayCompleted] = useState(false);
+  const [totalLearned, setTotalLearned] = useState(0);
+  const [showReward, setShowReward] = useState(false);
 
   useEffect(() => {
-    // 使用本地数据
     setStocks(stocksData as Stock[]);
     setLoading(false);
+    loadProgress();
   }, []);
+
+  const loadProgress = () => {
+    // 从localStorage加载进度
+    const savedStreak = localStorage.getItem('learningStreak');
+    const savedTotal = localStorage.getItem('totalLearned');
+    const lastLearnDate = localStorage.getItem('lastLearnDate');
+    const today = new Date().toDateString();
+
+    if (savedStreak) setStreak(parseInt(savedStreak));
+    if (savedTotal) setTotalLearned(parseInt(savedTotal));
+    if (lastLearnDate === today) setTodayCompleted(true);
+  };
 
   const nextCard = () => {
     setCurrentIndex((prev) => (prev + 1) % stocks.length);
@@ -36,29 +59,41 @@ export default function Home() {
     setCurrentIndex((prev) => (prev - 1 + stocks.length) % stocks.length);
   };
 
-  const getRankIcon = (index: number) => {
-    if (index === 0) return '👑';
-    if (index === 1) return '🥈';
-    if (index === 2) return '🥉';
-    return `${index + 1}`;
-  };
-
-  const getRankClass = (index: number) => {
-    if (index === 0) return 'rank-gold';
-    if (index === 1) return 'rank-silver';
-    if (index === 2) return 'rank-bronze';
-    return 'rank-normal';
-  };
-
   const getCardPosition = (index: number) => {
     if (index === currentIndex) return 'active';
-    
     const prev = (currentIndex - 1 + stocks.length) % stocks.length;
     const next = (currentIndex + 1) % stocks.length;
-    
     if (index === prev) return 'prev';
     if (index === next) return 'next';
     return 'hidden';
+  };
+
+  const getStreakEmoji = () => {
+    if (streak >= 30) return '👑';
+    if (streak >= 14) return '🔥';
+    if (streak >= 7) return '⭐';
+    if (streak >= 3) return '💪';
+    return '🌱';
+  };
+
+  const getStreakMessage = () => {
+    if (streak >= 30) return '股神之路！';
+    if (streak >= 14) return '投资达人！';
+    if (streak >= 7) return '学习达人！';
+    if (streak >= 3) return '初露锋芒！';
+    if (streak >= 1) return '坚持就是胜利！';
+    return '开启学习之旅';
+  };
+
+  const getEncouragement = () => {
+    const messages = [
+      '今天学习一只股票，明天离财富自由更近一步 💰',
+      '巴菲特说：投资自己是最好的投资 📚',
+      '每天3分钟，一年认识365只股票 🚀',
+      '知识就是力量，学习就是赚钱 💡',
+      '别人在刷抖音，你在涨知识 😎',
+    ];
+    return messages[Math.floor(Math.random() * messages.length)];
   };
 
   if (loading) {
@@ -72,59 +107,87 @@ export default function Home() {
     );
   }
 
+  const currentStock = stocks[currentIndex];
+
   return (
     <div className="home-container">
-      {/* Header */}
-      <header className="home-header">
-        <div className="header-main">
-          <h1 className="app-title">
-            <span className="title-emoji">📈</span>
-            每日一股
-          </h1>
-          <p className="app-tagline">每天认识一只股票，轻松入门A股</p>
-        </div>
-        <div className="header-actions">
-          <button className="collection-btn" onClick={() => navigate('/collection')}>
-            <BookOpen size={18} />
-          </button>
-          <div className="streak-pill">
-            <Flame size={16} />
-            <span>{streak}天连胜</span>
+      {/* 今日任务卡片 */}
+      <div className="daily-mission">
+        <div className="mission-header">
+          <div className="mission-time">
+            <Clock size={16} />
+            <span>每天3分钟</span>
+          </div>
+          <div className="mission-streak">
+            <span className="streak-emoji">{getStreakEmoji()}</span>
+            <span className="streak-text">连续{streak}天</span>
           </div>
         </div>
-      </header>
+        
+        <h1 className="mission-title">
+          {todayCompleted ? '✅ 今日任务已完成！' : '📚 今日任务'}
+        </h1>
+        
+        <p className="mission-desc">
+          {todayCompleted 
+            ? `太棒了！你已完成今日学习，明天继续保持！` 
+            : `认识一只热门股票，了解它的投资价值`}
+        </p>
 
-      {/* Game Stats */}
-      <div className="game-stats">
-        <div className="stat-card">
-          <Trophy size={18} className="stat-icon gold" />
-          <div className="stat-info">
-            <span className="stat-value">12</span>
-            <span className="stat-label">已学习</span>
+        {/* 进度条 */}
+        <div className="mission-progress">
+          <div className="progress-bar">
+            <div 
+              className="progress-fill" 
+              style={{ width: todayCompleted ? '100%' : '0%' }}
+            />
+          </div>
+          <span className="progress-text">{todayCompleted ? '1/1' : '0/1'}</span>
+        </div>
+      </div>
+
+      {/* 激励语 */}
+      <div className="encouragement-banner">
+        <Sparkles size={16} />
+        <span>{getEncouragement()}</span>
+      </div>
+
+      {/* 学习成就概览 */}
+      <div className="achievement-bar">
+        <div className="achievement-item">
+          <div className="achievement-icon">📈</div>
+          <div className="achievement-info">
+            <span className="achievement-value">{totalLearned}</span>
+            <span className="achievement-label">已学股票</span>
           </div>
         </div>
-        <div className="stat-card">
-          <Target size={18} className="stat-icon purple" />
-          <div className="stat-info">
-            <span className="stat-value">78%</span>
-            <span className="stat-label">正确率</span>
+        <div className="achievement-divider" />
+        <div className="achievement-item">
+          <div className="achievement-icon">{getStreakEmoji()}</div>
+          <div className="achievement-info">
+            <span className="achievement-value">{streak}天</span>
+            <span className="achievement-label">{getStreakMessage()}</span>
           </div>
         </div>
-        <div className="stat-card">
-          <Sparkles size={18} className="stat-icon pink" />
-          <div className="stat-info">
-            <span className="stat-value">{stocks.length}</span>
-            <span className="stat-label">今日热股</span>
+        <div className="achievement-divider" />
+        <div className="achievement-item clickable" onClick={() => navigate('/collection')}>
+          <div className="achievement-icon">🃏</div>
+          <div className="achievement-info">
+            <span className="achievement-value">查看</span>
+            <span className="achievement-label">收藏卡片</span>
           </div>
         </div>
       </div>
 
-      {/* Card Carousel */}
-      <div className="carousel-section">
-        <h2 className="carousel-title">
-          <span className="title-icon">🔥</span>
-          今日热股
-        </h2>
+      {/* 今日推荐股票 */}
+      <div className="today-stock-section">
+        <div className="section-header">
+          <h2>
+            <span className="fire-icon">🔥</span>
+            今日热股推荐
+          </h2>
+          <span className="stock-count">{currentIndex + 1}/{stocks.length}</span>
+        </div>
 
         <div className="carousel-container">
           <button className="carousel-btn prev" onClick={prevCard}>
@@ -143,35 +206,45 @@ export default function Home() {
                   onClick={() => position === 'active' && navigate(`/stock/${stock.code}`)}
                 >
                   <div className="card-inner">
-                    <div className={`card-rank ${getRankClass(index)}`}>
-                      {getRankIcon(index)}
-                    </div>
-
-                    <div className="card-header">
-                      <h3 className="stock-name">{stock.name}</h3>
-                      <div className={`stock-change ${stock.changePercent >= 0 ? 'up' : 'down'}`}>
-                        {stock.changePercent >= 0 ? '↑' : '↓'} {Math.abs(stock.changePercent).toFixed(2)}%
+                    {/* 卡片顶部标签 */}
+                    <div className="card-top">
+                      <span className="industry-tag">{stock.industry || '热门'}</span>
+                      <div className={`price-change ${stock.changePercent >= 0 ? 'up' : 'down'}`}>
+                        {stock.changePercent >= 0 ? '+' : ''}{stock.changePercent.toFixed(2)}%
                       </div>
                     </div>
 
+                    {/* 股票名称 */}
+                    <h3 className="stock-name">{stock.name}</h3>
+                    
+                    {/* AI简介 */}
                     <p className="stock-summary">{stock.aiSummary}</p>
 
+                    {/* 热门话题标签 */}
                     <div className="card-tags">
-                      {stock.heatTags?.slice(0, 2).map((tag, i) => (
+                      {stock.heatTags?.slice(0, 3).map((tag, i) => (
                         <span key={i} className="tag">{tag}</span>
                       ))}
                     </div>
 
+                    {/* 底部按钮 */}
                     <div className="card-footer">
-                      <div className="heat-display">
-                        <Flame size={16} className="heat-icon" />
-                        <span className="heat-value">{stock.heatIndex}w热度</span>
+                      <div className="heat-info">
+                        <Flame size={14} />
+                        <span>{stock.heatIndex}w人关注</span>
                       </div>
                       {position === 'active' && (
-                        <button className="start-btn">
-                          了解一下 →
+                        <button className="learn-btn">
+                          <BookOpen size={16} />
+                          开始学习
                         </button>
                       )}
+                    </div>
+
+                    {/* 学习时长提示 */}
+                    <div className="time-hint">
+                      <Clock size={12} />
+                      <span>约3分钟</span>
                     </div>
                   </div>
                 </div>
@@ -184,7 +257,7 @@ export default function Home() {
           </button>
         </div>
 
-        {/* Progress Dots */}
+        {/* 进度点 */}
         <div className="carousel-dots">
           {stocks.map((_, index) => (
             <span
@@ -196,54 +269,41 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Quick Access */}
-      <div className="quick-access">
-        <h2 className="section-title">
-          <span className="title-icon">📋</span>
-          热股榜单
-        </h2>
-        <div className="quick-list">
-          {stocks.map((stock, index) => (
-            <div
-              key={stock.code}
-              className={`quick-item ${index === currentIndex ? 'active' : ''}`}
-              onClick={() => navigate(`/stock/${stock.code}`)}
-            >
-              <span className="quick-rank">{getRankIcon(index)}</span>
-              <span className="quick-name">{stock.name}</span>
-              <span className={`quick-change ${stock.changePercent >= 0 ? 'up' : 'down'}`}>
-                {stock.changePercent >= 0 ? '+' : ''}{stock.changePercent.toFixed(2)}%
-              </span>
-            </div>
-          ))}
+      {/* 学习奖励预览 */}
+      <div className="reward-preview">
+        <div className="reward-header">
+          <Gift size={18} />
+          <span>完成学习可获得</span>
+        </div>
+        <div className="reward-items">
+          <div className="reward-item">
+            <span className="reward-icon">🃏</span>
+            <span className="reward-text">股票卡片</span>
+          </div>
+          <div className="reward-item">
+            <span className="reward-icon">⭐</span>
+            <span className="reward-text">经验值+15</span>
+          </div>
+          <div className="reward-item">
+            <span className="reward-icon">🔥</span>
+            <span className="reward-text">连续天数+1</span>
+          </div>
         </div>
       </div>
 
-      {/* AI 智能推荐入口 */}
-      <div className="ai-recommend-card" onClick={() => navigate('/ai-recommend')}>
-        <div className="ai-recommend-icon">
-          <Target size={24} />
-        </div>
-        <div className="ai-recommend-info">
-          <h3>🤖 AI选股推荐</h3>
-          <p>市场解读+板块分析+个股推荐，今天买什么？</p>
-        </div>
-        <div className="ai-recommend-arrow">→</div>
-      </div>
-
-      {/* 新手导师入口卡片 */}
+      {/* 新手导师入口 */}
       <div className="mentor-card" onClick={() => document.querySelector<HTMLButtonElement>('.ai-chat-fab')?.click()}>
         <div className="mentor-icon">
           <Sparkles size={24} />
         </div>
         <div className="mentor-info">
           <h3>🎓 新手导师</h3>
-          <p>有问题？AI导师在线答疑，随时帮你解惑！</p>
+          <p>有疑问？AI导师随时在线答疑！</p>
         </div>
         <div className="mentor-arrow">💬</div>
       </div>
 
-      {/* AI Chat - 新手导师 */}
+      {/* AI Chat */}
       <AIChat 
         stockName="股票投资"
         stockCode="general"

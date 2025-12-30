@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { ArrowLeft, RefreshCw, Zap, Users, BookOpen, Star, TrendingUp } from 'lucide-react';
+import { ArrowLeft, RefreshCw, Zap, Users, BookOpen, Star, TrendingUp, CheckCircle, Clock, Target } from 'lucide-react';
 import stocksData from '../data/stocks.json';
 import AIChat from '../components/AIChat';
 import './StockDetail.css';
@@ -26,6 +26,7 @@ interface AIKnowledge {
 interface Stock {
   code: string;
   name: string;
+  industry?: string;
   currentPrice: number;
   changePercent: number;
   aiBriefing: string;
@@ -49,6 +50,8 @@ export default function StockDetail() {
   const [questionPool, setQuestionPool] = useState<Question[]>([]);
   const [displayQuestions, setDisplayQuestions] = useState<Question[]>([]);
   const [isWatchlisted, setIsWatchlisted] = useState(false);
+  const [learnedCount, setLearnedCount] = useState(0);
+  const [totalQuestions, setTotalQuestions] = useState(0);
 
   useEffect(() => {
     // 使用本地数据
@@ -56,10 +59,26 @@ export default function StockDetail() {
     if (foundStock) {
       setStock(foundStock);
       setQuestionPool(foundStock.questions);
+      setTotalQuestions(foundStock.questions.length);
       shuffleQuestions(foundStock.questions);
+      loadLearnProgress(stockCode!);
     }
     setLoading(false);
   }, [stockCode]);
+
+  const loadLearnProgress = (code: string) => {
+    const progressKey = `stockProgress_${code}`;
+    const saved = localStorage.getItem(progressKey);
+    if (saved) {
+      const progress = JSON.parse(saved);
+      setLearnedCount(progress.questionsAnswered || 0);
+    }
+  };
+
+  const getLearnProgress = () => {
+    if (totalQuestions === 0) return 0;
+    return Math.round((learnedCount / totalQuestions) * 100);
+  };
 
   const shuffleQuestions = (questions: Question[]) => {
     const shuffled = [...questions].sort(() => Math.random() - 0.5);
@@ -186,6 +205,8 @@ export default function StockDetail() {
   const overallScore = getOverallScore();
   const scoreInfo = getScoreLevel(overallScore);
 
+  const progress = getLearnProgress();
+
   return (
     <div className="detail-container">
       {/* Header */}
@@ -195,7 +216,7 @@ export default function StockDetail() {
         </button>
         <div className="header-info">
           <h1>{stock.name}</h1>
-          <span className="stock-code">{stock.code}</span>
+          <span className="stock-code">{stock.industry} · {stock.code}</span>
         </div>
         <div className={`price-badge ${stock.changePercent >= 0 ? 'up' : 'down'}`}>
           <span className="price">{stock.currentPrice.toFixed(2)}</span>
@@ -205,13 +226,52 @@ export default function StockDetail() {
         </div>
       </header>
 
-      {/* AI Briefing */}
-      <section className="briefing-section">
-        <div className="briefing-card">
-          <div className="briefing-icon">
-            <Zap size={18} />
+      {/* 学习进度卡片 */}
+      <section className="learn-progress-section">
+        <div className="progress-card">
+          <div className="progress-header">
+            <div className="progress-title">
+              <Target size={16} />
+              <span>学习进度</span>
+            </div>
+            <span className="progress-percent">{progress}%</span>
           </div>
-          <p>{stock.aiBriefing}</p>
+          <div className="progress-bar-wrapper">
+            <div className="progress-bar-bg">
+              <div 
+                className="progress-bar-fill" 
+                style={{ width: `${progress}%` }}
+              />
+            </div>
+          </div>
+          <div className="progress-stats">
+            <span>已学习 {learnedCount}/{totalQuestions} 个问题</span>
+            {progress >= 30 && <span className="progress-reward">🃏 再答{Math.max(0, 3 - learnedCount)}题可获得卡片</span>}
+          </div>
+        </div>
+      </section>
+
+      {/* 公司简介 - 更详细的背景信息 */}
+      <section className="company-intro-section">
+        <div className="intro-card">
+          <div className="intro-header">
+            <Zap size={16} />
+            <span>一句话了解{stock.name}</span>
+          </div>
+          <p className="intro-highlight">{stock.aiBriefing}</p>
+          
+          {stock.aiKnowledge && (
+            <div className="intro-detail">
+              <h4>📖 公司背景</h4>
+              <p>{stock.aiKnowledge.basicInfo}</p>
+              
+              <h4>💡 投资看点</h4>
+              <p>{stock.aiKnowledge.investmentAdvice}</p>
+              
+              <h4>⚠️ 风险提示</h4>
+              <p className="risk-text">{stock.aiKnowledge.riskWarning}</p>
+            </div>
+          )}
         </div>
       </section>
 
