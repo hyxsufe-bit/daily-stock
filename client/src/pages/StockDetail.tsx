@@ -374,7 +374,7 @@ export default function StockDetail() {
                   <span className="learn-arrow">→</span>
                 </div>
               </div>
-            )}
+            ))}
           </div>
 
           <button className="swipe-nav-btn next" onClick={nextPage}>
