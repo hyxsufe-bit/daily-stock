@@ -652,19 +652,24 @@ export default function GamePlay() {
             </div>
           )}
 
-          {/* Reaction Buttons */}
-          <div className="reaction-section">
-            <p className="reaction-label">你的感受：</p>
-            <div className="reaction-buttons">
-              {reactions.map(r => (
-                <button
-                  key={r.id}
-                  className={`reaction-btn ${selectedReaction === r.id ? 'active' : ''}`}
-                  onClick={() => handleReaction(r.id)}
-                >
-                  <span className="reaction-emoji">{r.emoji}</span>
-                  <span className="reaction-text">{r.label}</span>
-                </button>
+          {/* Deep Analysis - 放在最上面 */}
+          <div className="analysis-section">
+            <h2 className="analysis-main-title">📚 深度解读：{question.detailAnalysis.title}</h2>
+            
+            <div className="analysis-cards">
+              {question.detailAnalysis.sections.map((section, index) => (
+                <div key={index} className={`analysis-card ${expandedSections.includes(index) ? 'expanded' : ''}`}>
+                  <button className="card-header" onClick={() => toggleSection(index)}>
+                    {getIconComponent(section.icon)}
+                    <span className="card-title">{section.title}</span>
+                    {expandedSections.includes(index) ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
+                  </button>
+                  {expandedSections.includes(index) && (
+                    <div className="card-content">
+                      {renderContent(section.content)}
+                    </div>
+                  )}
+                </div>
               ))}
             </div>
           </div>
@@ -687,24 +692,19 @@ export default function GamePlay() {
             <p className="advice-text">{getInvestmentAdvice()}</p>
           </div>
 
-          {/* Deep Analysis */}
-          <div className="analysis-section">
-            <h2 className="analysis-main-title">📚 深度解读：{question.detailAnalysis.title}</h2>
-            
-            <div className="analysis-cards">
-              {question.detailAnalysis.sections.map((section, index) => (
-                <div key={index} className={`analysis-card ${expandedSections.includes(index) ? 'expanded' : ''}`}>
-                  <button className="card-header" onClick={() => toggleSection(index)}>
-                    {getIconComponent(section.icon)}
-                    <span className="card-title">{section.title}</span>
-                    {expandedSections.includes(index) ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
-                  </button>
-                  {expandedSections.includes(index) && (
-                    <div className="card-content">
-                      {renderContent(section.content)}
-                    </div>
-                  )}
-                </div>
+          {/* Reaction Buttons */}
+          <div className="reaction-section">
+            <p className="reaction-label">你的感受：</p>
+            <div className="reaction-buttons">
+              {reactions.map(r => (
+                <button
+                  key={r.id}
+                  className={`reaction-btn ${selectedReaction === r.id ? 'active' : ''}`}
+                  onClick={() => handleReaction(r.id)}
+                >
+                  <span className="reaction-emoji">{r.emoji}</span>
+                  <span className="reaction-text">{r.label}</span>
+                </button>
               ))}
             </div>
           </div>

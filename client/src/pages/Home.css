@@ -458,6 +458,103 @@
   background: linear-gradient(90deg, var(--accent-pink), var(--accent-purple));
 }
 
+/* 猜你喜欢 */
+.recommend-section {
+  background: var(--bg-card);
+  border-radius: 16px;
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
+.recommend-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+}
+
+.recommend-header h3 {
+  font-size: 16px;
+  font-weight: 700;
+  margin: 0;
+  color: white;
+}
+
+.recommend-hint {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.recommend-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.recommend-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.recommend-item:hover {
+  background: rgba(255, 255, 255, 0.06);
+  transform: translateX(4px);
+}
+
+.recommend-rank {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--accent-purple), var(--accent-pink));
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 700;
+  color: white;
+}
+
+.recommend-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.recommend-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: white;
+}
+
+.recommend-reason {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.recommend-change {
+  font-size: 13px;
+  font-weight: 600;
+  padding: 4px 8px;
+  border-radius: 6px;
+}
+
+.recommend-change.up {
+  color: var(--bull);
+  background: rgba(255, 71, 87, 0.1);
+}
+
+.recommend-change.down {
+  color: var(--bear);
+  background: rgba(46, 213, 115, 0.1);
+}
+
 /* 学习奖励预览 */
 .reward-preview {
   background: var(--bg-card);

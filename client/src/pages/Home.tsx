@@ -210,6 +210,34 @@ export default function Home() {
         </div>
       </div>
 
+      {/* 猜你喜欢 */}
+      <div className="recommend-section">
+        <div className="recommend-header">
+          <h3>💫 猜你喜欢</h3>
+          <span className="recommend-hint">根据你的浏览记录推荐</span>
+        </div>
+        <div className="recommend-list">
+          {stocks.slice(0, 3).map((stock, index) => (
+            <div 
+              key={stock.code}
+              className="recommend-item"
+              onClick={() => navigate(`/stock/${stock.code}`)}
+            >
+              <div className="recommend-rank">{index + 1}</div>
+              <div className="recommend-info">
+                <span className="recommend-name">{stock.name}</span>
+                <span className="recommend-reason">
+                  {index === 0 ? '🔥 最近很火' : index === 1 ? '📈 热度上升' : '💡 值得关注'}
+                </span>
+              </div>
+              <div className={`recommend-change ${stock.changePercent >= 0 ? 'up' : 'down'}`}>
+                {stock.changePercent >= 0 ? '+' : ''}{stock.changePercent.toFixed(2)}%
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
       {/* 今日任务进度 */}
       <div className="daily-mission-compact">
         <div className="mission-left">
