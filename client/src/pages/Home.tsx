@@ -14,6 +14,8 @@ interface Stock {
   heatTags: string[];
   aiSummary: string;
   industry?: string;
+  isRecommend?: boolean;
+  recommendReason?: string;
 }
 
 interface DailyProgress {
@@ -34,7 +36,19 @@ export default function Home() {
   const [showReward, setShowReward] = useState(false);
 
   useEffect(() => {
-    setStocks(stocksData as Stock[]);
+    // 给最后1-2只股票添加"猜你喜欢"标记
+    const allStocks = stocksData as Stock[];
+    const stocksWithRecommend = allStocks.map((stock, index) => {
+      if (index >= allStocks.length - 2) {
+        return {
+          ...stock,
+          isRecommend: true,
+          recommendReason: index === allStocks.length - 2 ? '📈 热度上升' : '💡 你可能感兴趣'
+        };
+      }
+      return stock;
+    });
+    setStocks(stocksWithRecommend);
     setLoading(false);
     loadProgress();
   }, []);
@@ -148,10 +162,17 @@ export default function Home() {
               return (
                 <div
                   key={stock.code}
-                  className={`stock-card-3d ${position}`}
+                  className={`stock-card-3d ${position} ${stock.isRecommend ? 'recommend' : ''}`}
                   onClick={() => position === 'active' && navigate(`/stock/${stock.code}`)}
                 >
                   <div className="card-inner">
+                    {/* 猜你喜欢标记 */}
+                    {stock.isRecommend && (
+                      <div className="recommend-badge">
+                        💫 猜你喜欢
+                      </div>
+                    )}
+                    
                     {/* 卡片顶部标签 */}
                     <div className="card-top">
                       <span className="industry-tag">{stock.industry || '热门'}</span>
@@ -163,7 +184,10 @@ export default function Home() {
                     {/* 股票名称 */}
                     <h3 className="stock-name">{stock.name}</h3>
                     
-                    {/* AI简介 */}
+                    {/* 推荐理由或AI简介 */}
+                    {stock.isRecommend && stock.recommendReason && (
+                      <p className="recommend-reason">{stock.recommendReason}</p>
+                    )}
                     <p className="stock-summary">{stock.aiSummary}</p>
 
                     {/* 热门话题标签 */}
@@ -206,34 +230,6 @@ export default function Home() {
               className={`carousel-dot ${index === currentIndex ? 'active' : ''}`}
               onClick={() => setCurrentIndex(index)}
             />
-          ))}
-        </div>
-      </div>
-
-      {/* 猜你喜欢 */}
-      <div className="recommend-section">
-        <div className="recommend-header">
-          <h3>💫 猜你喜欢</h3>
-          <span className="recommend-hint">根据你的浏览记录推荐</span>
-        </div>
-        <div className="recommend-list">
-          {stocks.slice(0, 3).map((stock, index) => (
-            <div 
-              key={stock.code}
-              className="recommend-item"
-              onClick={() => navigate(`/stock/${stock.code}`)}
-            >
-              <div className="recommend-rank">{index + 1}</div>
-              <div className="recommend-info">
-                <span className="recommend-name">{stock.name}</span>
-                <span className="recommend-reason">
-                  {index === 0 ? '🔥 最近很火' : index === 1 ? '📈 热度上升' : '💡 值得关注'}
-                </span>
-              </div>
-              <div className={`recommend-change ${stock.changePercent >= 0 ? 'up' : 'down'}`}>
-                {stock.changePercent >= 0 ? '+' : ''}{stock.changePercent.toFixed(2)}%
-              </div>
-            </div>
           ))}
         </div>
       </div>

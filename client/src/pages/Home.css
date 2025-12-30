@@ -315,6 +315,32 @@
   pointer-events: none;
 }
 
+/* 猜你喜欢标记 */
+.recommend-badge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--accent-yellow);
+  background: rgba(251, 191, 36, 0.15);
+  padding: 4px 10px;
+  border-radius: 12px;
+  border: 1px solid rgba(251, 191, 36, 0.3);
+  z-index: 2;
+}
+
+.stock-card-3d.recommend .card-inner {
+  border-color: rgba(251, 191, 36, 0.3);
+}
+
+.recommend-reason {
+  font-size: 12px;
+  color: var(--accent-yellow);
+  margin: 0 0 6px;
+  font-weight: 500;
+}
+
 /* 卡片顶部 */
 .card-top {
   display: flex;
@@ -458,102 +484,6 @@
   background: linear-gradient(90deg, var(--accent-pink), var(--accent-purple));
 }
 
-/* 猜你喜欢 */
-.recommend-section {
-  background: var(--bg-card);
-  border-radius: 16px;
-  padding: 16px;
-  margin-bottom: 16px;
-}
-
-.recommend-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 14px;
-}
-
-.recommend-header h3 {
-  font-size: 16px;
-  font-weight: 700;
-  margin: 0;
-  color: white;
-}
-
-.recommend-hint {
-  font-size: 11px;
-  color: var(--text-muted);
-}
-
-.recommend-list {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.recommend-item {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 12px;
-  background: rgba(255, 255, 255, 0.03);
-  border-radius: 12px;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.recommend-item:hover {
-  background: rgba(255, 255, 255, 0.06);
-  transform: translateX(4px);
-}
-
-.recommend-rank {
-  width: 24px;
-  height: 24px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: linear-gradient(135deg, var(--accent-purple), var(--accent-pink));
-  border-radius: 8px;
-  font-size: 12px;
-  font-weight: 700;
-  color: white;
-}
-
-.recommend-info {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-
-.recommend-name {
-  font-size: 14px;
-  font-weight: 600;
-  color: white;
-}
-
-.recommend-reason {
-  font-size: 11px;
-  color: var(--text-muted);
-}
-
-.recommend-change {
-  font-size: 13px;
-  font-weight: 600;
-  padding: 4px 8px;
-  border-radius: 6px;
-}
-
-.recommend-change.up {
-  color: var(--bull);
-  background: rgba(255, 71, 87, 0.1);
-}
-
-.recommend-change.down {
-  color: var(--bear);
-  background: rgba(46, 213, 115, 0.1);
-}
 
 /* 学习奖励预览 */
 .reward-preview {
